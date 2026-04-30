@@ -1,0 +1,27 @@
+import torch
+import torchvision
+from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
+from torchvision.models.detection.retinanet import RetinaNetClassificationHead
+from torchvision.models.detection.ssd import SSDClassificationHead
+
+def build_model(model_name: str, num_classes: int):
+
+    # 1. Faster R-CNN (ResNet50) - Balanced Precision/Speed
+    if model_name == "fasterrcnn_resnet50_fpn":
+        model = torchvision.models.detection.fasterrcnn_resnet50_fpn(weights="DEFAULT")
+        in_features = model.roi_heads.box_predictor.cls_score.in_features
+        model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
+
+    # 2. Faster R-CNN (MobileNet) - Optimized for Mobile/Edge
+    elif model_name == "fasterrcnn_mobilenet_v3":
+        model = torchvision.models.detection.fasterrcnn_mobilenet_v3_large_fpn(weights="DEFAULT")
+        in_features = model.roi_heads.box_predictor.cls_score.in_features
+        model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
+
+    return model
+
+
+
+
+
+
