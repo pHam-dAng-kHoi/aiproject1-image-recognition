@@ -8,3 +8,4 @@ __pycache__/
 *.pyd
 
 debug_images/
+*.pth
